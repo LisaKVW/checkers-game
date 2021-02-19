@@ -13,15 +13,28 @@ html, body {
 
     background-color: yellowgreen;
     font-family: 'Press Start 2P', cursive;
+    
+}
+body {
+    background: url("https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1000&q=80");
+    /* background-size: cover; */
 }
 
 .navbar {
+    minWidth: 100vw;
     display: flex;
     height: 70px;
     background-color: red;
     padding: 10px;
-    margin: 0 0 30px 0;
+    margin: 0 0 10vh 0;
 
+}
+
+.title-wrapper {
+    /* width: 50vw; */
+    display: flex;
+    justify-content: center;
+    align-items: left;
 }
 
 .site-header {
@@ -30,14 +43,25 @@ html, body {
     align-items: center;
     font-size: 28px;
     font-weight: bold;
-    
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    white-space: nowrap;
+    /* transform-origin: left;
+    animation: typing 3.5s steps(30, end); */
+
 }
 .board {
     display: grid;
     width: 48vw;
-    grid-template-columns: repeat(8, 6vw);
-    grid-template-rows: repeat(8, 6vw);
-    background-color: blue;
+    grid-template-columns: repeat(8, 7vw);
+    grid-template-rows: repeat(8, 7vw);
+    grid-gap: 4px;
+    background-color: rgba(0,0,0,0);
     margin: auto;
 }
 
+
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
