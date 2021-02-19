@@ -4,27 +4,58 @@ const body = document.querySelector("body")
 const board = document.querySelector(".board")
 
 
-const createBoard = () => {
-    const textColor = "white"
+/**
+ * ============================
+ *  Square Functions
+ * ============================
+ **/
+
+const createSquare = (evenColoredSquare, evenColoredRow, i) => {
+    const squareColor = chooseSquareColor(evenColoredSquare, evenColoredRow)
+    const square = document.createElement("div")
+    square.classList.add("square")
+    square.id = i + 1
+    square.style.backgroundColor = squareColor
+    return [square, squareColor, (i + 1)]
+}
+
+const chooseSquareColor = (evenColoredSquare, evenColoredRow) => evenColoredRow ?
+    (evenColoredSquare ? "green" : "purple") :
+    (evenColoredSquare ? "purple" : "green")
+
+/**
+ * ============================
+ *  Checkers-Piece Functions
+ * ============================
+ **/
+
+const choosePieceColor = (id) => id < 24 ? "white" : "black"
+
+
+const shouldPieceExist = (id) => id < 24 || id > 41  
+
+const addPieceToBoard = (square, color) => {
+    const checkersPiece = document.createElement("div")
+    checkersPiece.classList.add("checkers-piece")
+    checkersPiece.classList.add(`${color}-piece`)
+    square.appendChild(checkersPiece)
+}
+
+
+/**
+ * ============================
+ *  Board Functions
+ * ============================
+ **/
+
+const setupBoard = () => {
     let evenColoredRow = true
     let colorCounter = 0
     for (let i = 0; i < 64; i++) {
         const evenColoredSquare = i % 2 !== 0
-        const squareColor = evenColoredRow ?
-            (evenColoredSquare ? "green" : "purple") :
-            (evenColoredSquare ? "purple" : "green")
-
-        const square = document.createElement("div")
-        square.classList.add("square")
-
-        square.id = i + 1
-
-        square.style.backgroundColor = squareColor
-        if (squareColor === "purple" && square.id < 24) {
-            makePlayerOnePiece(square)
-        } else if (squareColor === "purple" && square.id > 41) {
-            makePlayerTwoPiece(square)
-        }
+        const [ square, squareColor, id ] = createSquare(evenColoredSquare, evenColoredRow, i)
+        const pieceColor = shouldPieceExist(id) && choosePieceColor(id)
+        squareColor === "purple" && pieceColor && addPieceToBoard(square, pieceColor)
 
         board.appendChild(square)
         ++colorCounter
@@ -35,48 +66,16 @@ const createBoard = () => {
     }
 }
 
-const makePlayerOnePiece = (square) => {
-    const whitePiece = document.createElement("div")
-    whitePiece.classList.add("white-piece")
-    whitePiece.classList.add("checkers-piece")
-    square.appendChild(whitePiece)
-}
+/**
+ * ============================
+ *  Game Setup & Launch
+ * ============================
+ **/
 
-const makePlayerTwoPiece = (square) => {
-    const blackPiece = document.createElement("div")
-    blackPiece.classList.add("black-piece")
-    blackPiece.classList.add("checkers-piece")
-    square.appendChild(blackPiece)
+const playGame = () => {
+    setupBoard()
+    // other functions...
 }
 
 
-//pieces of the board that will not be used are white (green)- dark ones (purple) are used in the game
-//color = purple have player on it
-//green never used
-
-
-
-// const setBoardPlayerTop = () => {
-//     for (let i = 1; i < 25; i++){
-//         if (i % 2 !== 0){
-//             const playerSquare = document.getElementById(`${i}`)
-//             playerSquare.style.backgroundColor = "purple"
-//         }
-//     }
-// }
-
-
-// const setBoardPlayerBottom = () => {
-//     for (let i = 41; i < 65; i++){
-//         if (i % 2 === 0){
-//             const playerSquare = document.getElementById(`${i}`)
-//             playerSquare.style.backgroundColor = "blue"
-//         }
-//     }
-// }
-
-
-createBoard()
-
-// setBoardPlayerTop()
-// setBoardPlayerBottom()
+playGame()
