@@ -3,50 +3,58 @@ console.log("javascript index.js connected")
 const body = document.querySelector("body")
 const board = document.querySelector(".board")
 
-for (let i = 0; i < 64; i++){
-    const squareColor =  i % 2 === 0 ? "black" : "white"
-    const textColor = squareColor === "white" ? "black" : "white"
 
-    const square = document.createElement("div")
-    const numberLabel = document.createElement("p")
+const createBoard = () => {
+    const textColor = "white"
+    let evenColoredRow = true
+    let colorCounter = 0
+    for (let i = 0; i < 64; i++){
+        const evenColoredSquare = i % 2 !== 0
+        const squareColor =  evenColoredRow  ? 
+            (evenColoredSquare ? "green" : "purple") : 
+            (evenColoredSquare ? "purple" : "green")
 
-    numberLabel.innerText = `${i + 1}`
-    numberLabel.style.color = textColor
-    square.id = i + 1
-    square.appendChild(numberLabel)
-    console.log('reached')
-
-    square.style.backgroundColor = squareColor
-    board.appendChild(square)
-}
-
-
-const square2 =  document.getElementById("2")
-console.log(square2)
-square2.style.backgroundColor = "yellow"
-
-const setBoardPlayerTop = () => {
-    for (let i = 1; i < 25; i++){
-        if (i % 2 !== 0){
-            const playerSquare = document.getElementById(`${i}`)
-            playerSquare.style.backgroundColor = "purple"
+        const square = document.createElement("div")
+        const numberLabel = document.createElement("p")
+    
+        numberLabel.innerText = `${i + 1}`
+        numberLabel.style.color = textColor
+        square.id = i + 1
+        square.appendChild(numberLabel)
+    
+        square.style.backgroundColor = squareColor
+        board.appendChild(square)
+        ++colorCounter 
+        if (colorCounter === 8) {
+            evenColoredRow = !evenColoredRow
+            colorCounter = 0
         }
-
-    }
-}
-
-
-const setBoardPlayerBottom = () => {
-    for (let i = 41; i < 65; i++){
-        if (i % 2 === 0){
-            const playerSquare = document.getElementById(`${i}`)
-            playerSquare.style.backgroundColor = "blue"
-        }
-
     }
 }
 
 
 
-setBoardPlayerTop()
-setBoardPlayerBottom()
+// const setBoardPlayerTop = () => {
+//     for (let i = 1; i < 25; i++){
+//         if (i % 2 !== 0){
+//             const playerSquare = document.getElementById(`${i}`)
+//             playerSquare.style.backgroundColor = "purple"
+//         }
+//     }
+// }
+
+
+// const setBoardPlayerBottom = () => {
+//     for (let i = 41; i < 65; i++){
+//         if (i % 2 === 0){
+//             const playerSquare = document.getElementById(`${i}`)
+//             playerSquare.style.backgroundColor = "blue"
+//         }
+//     }
+// }
+
+
+createBoard()
+
+// setBoardPlayerTop()
+// setBoardPlayerBottom()
