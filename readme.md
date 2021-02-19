@@ -11,7 +11,7 @@ By: Collin Didier
 By: Lisa Venneker Wand
 
 [GitHub](https://github.com/LisaKVW) |
-[LinkedIn](https://www.linkedin.com/in/lisa-venneker-wand-8413ab25/) |
+[LinkedIn](https://www.linkedin.com/in/lisa-venneker-wand-8413ab25/) 
 
 ## Description
 A simple fun game of checkers made with Vanilla JS.
