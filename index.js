@@ -88,7 +88,7 @@ let blackScore = 12
 let whitePiece = document.getElementsByClassName("white-piece")
 let blackPiece = document.getElementsByClassName("black-piece")
 let allPieces = document.getElementsByClassName("checkers-piece")
-let playerPiece
+let playerPiece //for the toggle
 let square = document.getElementsByClassName("square")
 
 // Grabbing a Piece - adding click function to all
@@ -106,6 +106,7 @@ const grabPiece = () => {
 grabPiece()
 
 // to grab the right piece - we need its ID and the ID of the square - this so we click on piece and move it to correct +7 or +9 square id
+// NEED function - but first need id to pieces
 
 // togggle between players
 const selectedPiece = () => {
