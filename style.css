@@ -21,7 +21,7 @@ body {
 }
 
 .navbar {
-    minWidth: 100vw;
+    min-width: 100vw;
     display: flex;
     height: 70px;
     background-color: red;
