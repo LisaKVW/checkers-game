@@ -88,6 +88,8 @@ const playGame = () => {
 
 playGame()
 
+
+
 let playerTurn = true // toggle for turn
 let whiteScore = 12 // each player has 12 pieces - once you have 0 you lose
 let blackScore = 12
