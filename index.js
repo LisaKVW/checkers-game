@@ -77,5 +77,4 @@ const playGame = () => {
     // other functions...
 }
 
-
 playGame()
