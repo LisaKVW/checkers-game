@@ -69,9 +69,9 @@ const setupBoard = () => {
 // ad id to checkerpieces
 
 const addIdtoPieces = () => {
-    let whitePiecesId = document.getElementsByClassName("white-piece")[0]
-    console.log("white id", whitePiecesId)
+    let whitePiecesId = document.getElementsByClassName("white-piece")
     whitePiecesId.id = i + 1
+    console.log("white id", whitePiecesId)
     return whitePiecesId.id
 }
 
