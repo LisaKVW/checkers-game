@@ -2,6 +2,8 @@ console.log("javascript index.js connected")
 
 const body = document.querySelector("body")
 const board = document.querySelector(".board")
+let playerTurn = ""
+
 // const report = document.querySelector("#report")
 // const report2 = document.querySelector("#report2")
 
@@ -17,6 +19,7 @@ const addEventListeners = (square) => {
     square.addEventListener("dragover", dragoverPreventDefault)
     square.addEventListener("drop", dropPiece)
 }
+
 
 const addSquareClassesAndId = (square, i) => {
     square.classList.add("square")
@@ -90,9 +93,18 @@ const dropPiece = (e) => {
 const choosePieceColor = (id) => id < 24 ? "white" : "black"
 
 
-const addListenersToPiece = (checkersPiece) => {
-    checkersPiece.draggable = "true"
-    checkersPiece.addEventListener("dragstart", dragPiece)
+const activatePiece = (checkersPieces) => {
+    checkersPieces.forEach((checkersPiece) => {
+        checkersPiece.draggable = "true"
+        checkersPiece.addEventListener("dragstart", dragPiece)
+    })
+}
+
+const dissablePiece = (checkersPieces) => {
+    checkersPieces.forEach((checkersPiece) => {
+        checkersPiece.draggable = "false"
+        checkersPiece.removeEventListener("dragstart", dragPiece)
+    })
 }
 
 
@@ -106,7 +118,6 @@ const addClassesAndId = (checkersPiece, color, id) => {
 const addPieceToBoard = (square, color, id) => {
     const checkersPiece = document.createElement("div")
     addClassesAndId(checkersPiece, color, id)
-    addListenersToPiece(checkersPiece)
     square.appendChild(checkersPiece)
 }
 
@@ -152,7 +163,7 @@ const setupBoard = () => {
 
 /**
  * ============================
- *     BULLSHIT
+ *     REALLSHIT
  * ============================
 **/
 
@@ -184,27 +195,60 @@ const stackThemAll = () => {
     })
 }
 
+const querySelections = () => {
+    let whitePieces = document.getElementsByClassName("white-piece")
+    let blackPieces = document.getElementsByClassName("black-piece")
+    let allPieces = document.getElementsByClassName("checkers-piece")
+    let squares = document.getElementsByClassName("square")
+    return [whitePieces, blackPieces, allPieces, squares]
+}
+
 
 const playGame = () => {
     setupBoard()
     stackThemAll()
+    [whitePieces, blackPieces, allPieces, squares] = querySelections()
     // other functions...
 }
 
 playGame()
 
 
-let playerTurn = true  //toggle for turn
-let whiteScore = 12    // each player has 12 pieces - once you have 0 you lose
-let blackScore = 12
+const activateWhite = (whitePieces, blackPieces) => {
+    playerTurn = "white-piece"
+    activatePiece(whitePieces)
+    dissablePiece(blackPieces)
+}
 
-// ability to select a piece
-let whitePieces = document.getElementsByClassName("white-piece")
-let blackPieces = document.getElementsByClassName("black-piece")
-let allPieces = document.getElementsByClassName("checkers-piece")
-let playerPiece //for the toggle
-let square = document.getElementsByClassName("square")
+const activateBlack = (whitePieces, blackPieces) => {
+    playerTurn = "black-piece"
+    activatePiece(blackPieces)
+    dissablePiece(whitePieces)
+}
 
+const toggleActivePlayer = (whitePieces, blackPieces) => (playerTurn === "black-piece") ?
+    activateWhite(whitePieces, blackPieces) :
+    activateBlack(whitePieces, blackPieces)
+
+
+// there gonna be category of functions for rules of jumping
+// one function taht runs all of thos rules and return the valid jump target squares
+// add the eventlisteners to those squares
+// remove the eventlistener - once the piece is moved = other person turn
+
+
+// function that allows drag and drop
+// when toggle off we take away the eventListener
+
+// const dragPiece = (e) => {
+// const dropPiece = (e) => {
+
+// player BLACK always goes first  - so if piece is black - make move - else if white make move
+// make move - limit to one move only per turn, diagnole on purple
+// the square must be empty
+// OR the square has an opponent on it and there is an empty square behind it - so take over
+// if you take over - the opponents piece should dissapear and score should go -1
+// once one player made a move, its the other player turn to make a move, toggle
 
 
 
