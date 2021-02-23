@@ -2,6 +2,8 @@ console.log("javascript index.js connected")
 
 const body = document.querySelector("body")
 const board = document.querySelector(".board")
+let playerTurn = ""
+
 // const report = document.querySelector("#report")
 // const report2 = document.querySelector("#report2")
 
@@ -17,6 +19,7 @@ const addEventListeners = (square) => {
     square.addEventListener("dragover", dragoverPreventDefault)
     square.addEventListener("drop", dropPiece)
 }
+
 
 const addSquareClassesAndId = (square, i) => {
     square.classList.add("square")
@@ -40,7 +43,7 @@ const createSquare = (evenColoredSquare, evenColoredRow, counter, i) => {
     const squareColor = chooseSquareColor(evenColoredSquare, evenColoredRow)
     const square = document.createElement("div")
     addSquareAttributes(square, i, counter, squareColor)
-    return [ square, squareColor, (i + 1) ]
+    return [square, squareColor, (i + 1)]
 }
 
 const chooseSquareColor = (evenColoredSquare, evenColoredRow) => evenColoredRow ?
@@ -90,9 +93,18 @@ const dropPiece = (e) => {
 const choosePieceColor = (id) => id < 24 ? "white" : "black"
 
 
-const addListenersToPiece = (checkersPiece) => {
-    checkersPiece.draggable = "true"
-    checkersPiece.addEventListener("dragstart", dragPiece)
+const activatePiece = (checkersPieces) => {
+    checkersPieces.forEach((checkersPiece) => {
+        checkersPiece.draggable = "true"
+        checkersPiece.addEventListener("dragstart", dragPiece)
+    })
+}
+
+const dissablePiece = (checkersPieces) => {
+    checkersPieces.forEach((checkersPiece) => {
+        checkersPiece.draggable = "false"
+        checkersPiece.removeEventListener("dragstart", dragPiece)
+    })
 }
 
 
@@ -106,7 +118,6 @@ const addClassesAndId = (checkersPiece, color, id) => {
 const addPieceToBoard = (square, color, id) => {
     const checkersPiece = document.createElement("div")
     addClassesAndId(checkersPiece, color, id)
-    addListenersToPiece(checkersPiece)
     square.appendChild(checkersPiece)
 }
 
@@ -122,11 +133,11 @@ const setupBoard = () => {
     let counter = 0
     for (let i = 0; i < 64; i++) {
         const evenColoredSquare = i % 2 !== 0
-        const [ square, squareColor, id ] = createSquare(
-            evenColoredSquare, 
-            evenColoredRow, 
+        const [square, squareColor, id] = createSquare(
+            evenColoredSquare,
+            evenColoredRow,
             counter,
-            i, 
+            i,
         )
         const pieceColor = shouldPieceExist(id) && choosePieceColor(id)
         squareColor === "purple" && pieceColor && addPieceToBoard(square, pieceColor, id)
@@ -152,14 +163,14 @@ const setupBoard = () => {
 
 /**
  * ============================
- *     BULLSHIT
+ *     REALLSHIT
  * ============================
 **/
 
 
 const toPixels = (number) => `${number}px`
 
-const flyToPosition = (piece, {left: newLeft, top: newTop}) => {
+const flyToPosition = (piece, { left: newLeft, top: newTop }) => {
 
     piece.style.transform = "translate(0, 0)"
 
@@ -169,7 +180,7 @@ const stackThemAll = () => {
     const square32 = document.getElementById("32")
     const squares = document.querySelectorAll(".square")
     squares.forEach(square => square.style.position = "relative")
-    
+
     square32.style.position = "relative"
     square32.style.backgroundColor = "yellow"
     const coordinates32 = square32.getBoundingClientRect()
@@ -177,73 +188,73 @@ const stackThemAll = () => {
     const thePieces = document.querySelectorAll(".checkers-piece")
 
     thePieces.forEach((piece, index) => {
-            
-            const milliseconds = index / 10 * 1000
-            setTimeout(() => piece.classList.add("in-position"), milliseconds)
+
+        const milliseconds = index / 10 * 1000
+        setTimeout(() => piece.classList.add("in-position"), milliseconds)
 
     })
+}
+
+const querySelections = () => {
+    let whitePieces = document.getElementsByClassName("white-piece")
+    let blackPieces = document.getElementsByClassName("black-piece")
+    let allPieces = document.getElementsByClassName("checkers-piece")
+    let squares = document.getElementsByClassName("square")
+    return [whitePieces, blackPieces, allPieces, squares]
 }
 
 
 const playGame = () => {
     setupBoard()
     stackThemAll()
+    [whitePieces, blackPieces, allPieces, squares] = querySelections()
     // other functions...
 }
 
 playGame()
 
 
-// let playerTurn = true 
-// toggle for turn
-// let whiteScore = 12 
-// each player has 12 pieces - once you have 0 you lose
-// let blackScore = 12
+const activateWhite = (whitePieces, blackPieces) => {
+    playerTurn = "white-piece"
+    activatePiece(whitePieces)
+    dissablePiece(blackPieces)
+}
 
-// ability to select a piece
-// let whitePieces = document.getElementsByClassName("white-piece")
-// let blackPieces = document.getElementsByClassName("black-piece")
-// let allPieces = document.getElementsByClassName("checkers-piece")
-// let playerPiece //for the toggle
-// let square = document.getElementsByClassName("square")
+const activateBlack = (whitePieces, blackPieces) => {
+    playerTurn = "black-piece"
+    activatePiece(blackPieces)
+    dissablePiece(whitePieces)
+}
 
-// Grabbing a Piece - adding click function to all
-// const grabPiece = () => {
-//     if (playerTurn) {
-//         for (let i = 0; i < whitePieces.length; i++) {
-//             whitePieces[i].addEventListener("click", selectedPiece)
-//         }
-//     } else {
-//         for (let i = 0; i < blackPieces.length; i++) {
-//             blackPieces[i].addEventListener("click", selectedPiece)
-//         }
-//     }
-// }
+const toggleActivePlayer = (whitePieces, blackPieces) => (playerTurn === "black-piece") ?
+    activateWhite(whitePieces, blackPieces) :
+    activateBlack(whitePieces, blackPieces)
 
 
+// there gonna be category of functions for rules of jumping
+// one function taht runs all of thos rules and return the valid jump target squares
+// add the eventlisteners to those squares
+// remove the eventlistener - once the piece is moved = other person turn
 
 
+// function that allows drag and drop
+// when toggle off we take away the eventListener
 
+// const dragPiece = (e) => {
+// const dropPiece = (e) => {
 
-// to grab the right piece - we need its ID and the ID of the square - this so we click on piece and move it to correct +7 or +9 square id
-// NEED function - but first need id to pieces
-
-// togggle between players
-// const selectedPiece = () => {
-//     if (playerTurn) {
-//         playerPiece = whitePieces
-//     } else {
-//         playerPiece = blackPieces
-//     }
-// }
-// selectedPiece()
-
+// player BLACK always goes first  - so if piece is black - make move - else if white make move
+// make move - limit to one move only per turn, diagnole on purple
+// the square must be empty
+// OR the square has an opponent on it and there is an empty square behind it - so take over
+// if you take over - the opponents piece should dissapear and score should go -1
+// once one player made a move, its the other player turn to make a move, toggle
 
 
 
 // human perspective
 
-/* move to a space in front of you, but no back (unless theres a king)  */  
+/* move to a space in front of you, but no back (unless theres a king)  */
 // this means two things: 
 // 1. you need to keep track of whether or not a piece is "normal" or "king"
 // 2. You need a way to keep track of places in front of you, 
